@@ -1,5 +1,8 @@
 package dev.mikablondo.imprint;
 
+import dev.mikablondo.imprint.utils.CompressionUtils;
+import dev.mikablondo.imprint.utils.SerializationUtils;
+
 /**
  * {@link ImprintEncoder} implementation that encodes the serialized object into a self-contained,
  * portable string using compression and Base64 encoding.
@@ -7,8 +10,7 @@ package dev.mikablondo.imprint;
  * <p>Encoding process: serialization -> compression -> Base64 -> seed</p>
  * <p>Decoding process: seed -> Base64 -> decompression -> deserialization -> Object</p>
  */
-public class Imprint implements ImprintEncoder {
-
+public class ImprintSimple implements ImprintEncoder {
     /**
      * {@inheritDoc}
      *
@@ -16,7 +18,29 @@ public class Imprint implements ImprintEncoder {
      */
     @Override
     public String encode(Object o) {
-        return "";
+        if(o == null)
+            return "";
+
+        String seed;
+
+        // serialize
+        try {
+            seed = SerializationUtils.toJson(o);
+        } catch (Exception e) {
+            throw new ImprintException("Failed to serialize object: " + e.getMessage());
+        }
+
+        // compress
+        try {
+            seed = CompressionUtils.compress(seed);
+        } catch (Exception e) {
+            throw new ImprintException("Failed to compress object: " + e.getMessage());
+        }
+
+        // Base64 encode
+        // TODO: implement Base64 encoding
+
+        return null;
     }
 
     /**
