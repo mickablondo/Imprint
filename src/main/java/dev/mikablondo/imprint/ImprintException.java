@@ -7,6 +7,6 @@ package dev.mikablondo.imprint;
  */
 public class ImprintException extends RuntimeException {
     public ImprintException(String message) {
-        super("** Imprint Lib ** - " + message);
+        super("[Imprint] - " + message);
     }
 }
