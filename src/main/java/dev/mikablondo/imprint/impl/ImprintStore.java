@@ -1,13 +1,15 @@
-package dev.mikablondo.imprint;
+package dev.mikablondo.imprint.impl;
+
+import dev.mikablondo.imprint.Imprint;
 
 /**
- * {@link ImprintEncoder} implementation that stores the serialized object in an external store,
+ * {@link Imprint} implementation that stores the serialized object in an external store,
  * and returns a short UUID as seed.
  *
  * <p>Encoding process: serialization -> store -> UUID</p>
  * <p>Decoding process: UUID -> store lookup -> deserialization -> Object</p>
  */
-public class ImprintStore implements ImprintEncoder {
+public class ImprintStore implements Imprint {
     /**
      * {@inheritDoc}
      *

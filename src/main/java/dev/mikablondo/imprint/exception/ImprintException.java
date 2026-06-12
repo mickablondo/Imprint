@@ -1,4 +1,4 @@
-package dev.mikablondo.imprint;
+package dev.mikablondo.imprint.exception;
 
 /**
  * Exception class for handling errors related to the Imprint encoding and decoding processes.

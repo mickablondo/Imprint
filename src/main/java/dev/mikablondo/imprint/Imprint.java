@@ -4,7 +4,7 @@ package dev.mikablondo.imprint;
  * Contract for encoding any Java object into a portable string (seed),
  * and decoding it back to its original form.
  */
-public interface ImprintEncoder {
+public interface Imprint {
 
     /**
      * Encodes a Java object into a portable seed string.
