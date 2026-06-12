@@ -1,32 +1,31 @@
 package dev.mikablondo.imprint;
 
 /**
- * Utility for encoding any Java object into a compact, portable string,
- * and decoding it back to its original form.
+ * {@link ImprintEncoder} implementation that encodes the serialized object into a self-contained,
+ * portable string using compression and Base64 encoding.
+ *
+ * <p>Encoding process: serialization -> compression -> Base64 -> seed</p>
+ * <p>Decoding process: seed -> Base64 -> decompression -> deserialization -> Object</p>
  */
-public class Imprint {
+public class Imprint implements ImprintEncoder {
 
     /**
-     * Encodes a Java object into a compact, portable string (seed) using the following process:
-     * serialization -> compression -> Base64.
+     * {@inheritDoc}
      *
-     * @param o the object to encode
-     * @return the encoded seed as a Base64 string
+     * @implSpec Serializes, compresses and Base64-encodes the object into a self-contained seed.
      */
-    public static String encode(Object o) {
-        // TODO
-        return null;
+    @Override
+    public String encode(Object o) {
+        return "";
     }
 
     /**
-     * Decodes a seed back to its original Java object using the following process:
-     * Base64 -> decompression -> deserialization.
+     * {@inheritDoc}
      *
-     * @param s the seed to decode
-     * @return the decoded object
+     * @implSpec Base64-decodes, decompresses and deserializes the seed back to its original object.
      */
-    public static Object decode(String s) {
-        // TODO
+    @Override
+    public Object decode(String s) {
         return null;
     }
 }
