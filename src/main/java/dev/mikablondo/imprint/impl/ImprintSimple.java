@@ -1,9 +1,15 @@
 package dev.mikablondo.imprint.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import dev.mikablondo.imprint.Imprint;
+import dev.mikablondo.imprint.exception.ImprintError;
 import dev.mikablondo.imprint.exception.ImprintException;
+import dev.mikablondo.imprint.utils.Base64Utils;
 import dev.mikablondo.imprint.utils.CompressionUtils;
 import dev.mikablondo.imprint.utils.SerializationUtils;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * {@link Imprint} implementation that encodes the serialized object into a self-contained,
@@ -20,29 +26,19 @@ public class ImprintSimple implements Imprint {
      */
     @Override
     public String encode(Object o) {
-        if(o == null)
-            return "";
-
-        String seed;
-
-        // serialize
-        try {
-            seed = SerializationUtils.toJson(o);
-        } catch (Exception e) {
-            throw new ImprintException("Failed to serialize object: " + e.getMessage());
+        if (o == null) {
+            throw new ImprintException(ImprintError.NULL_OBJECT);
         }
 
-        // compress
         try {
-            seed = CompressionUtils.compress(seed);
-        } catch (Exception e) {
-            throw new ImprintException("Failed to compress object: " + e.getMessage());
+            final String json = SerializationUtils.toJson(o);
+            final byte[] compressed = CompressionUtils.compress(json.getBytes(StandardCharsets.UTF_8));
+            return Base64Utils.encode(compressed);
+        } catch (JsonProcessingException e) {
+            throw new ImprintException(ImprintError.SERIALIZATION_FAILED, e);
+        } catch (IOException e) {
+            throw new ImprintException(ImprintError.COMPRESSION_FAILED, e);
         }
-
-        // Base64 encode
-        // TODO: implement Base64 encoding
-
-        return null;
     }
 
     /**

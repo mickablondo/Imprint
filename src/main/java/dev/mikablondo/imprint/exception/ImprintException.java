@@ -6,7 +6,11 @@ package dev.mikablondo.imprint.exception;
  * or any other step in the Imprint process fails.
  */
 public class ImprintException extends RuntimeException {
-    public ImprintException(String message) {
-        super("[Imprint] - " + message);
+    public ImprintException(ImprintError error) {
+        super("[imprint] " + error.getMessage());
+    }
+
+    public ImprintException(ImprintError error, Throwable cause) {
+        super("[imprint] " + error.getMessage(), cause);
     }
 }

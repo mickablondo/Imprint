@@ -1,5 +1,6 @@
 package dev.mikablondo.imprint.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -18,9 +19,9 @@ public class SerializationUtils {
      *
      * @param o the object to serialize
      * @return the JSON string
-     * @throws Exception if serialization fails
+     * @throws JsonProcessingException if serialization fails
      */
-    public static String toJson(Object o) throws Exception {
+    public static String toJson(Object o) throws JsonProcessingException {
         return mapper.writeValueAsString(o);
     }
 
@@ -29,9 +30,9 @@ public class SerializationUtils {
      *
      * @param json the JSON string to deserialize
      * @return the deserialized object
-     * @throws Exception if deserialization fails
+     * @throws JsonProcessingException if deserialization fails
      */
-    public static Object fromJson(String json) throws Exception {
+    public static Object fromJson(String json) throws JsonProcessingException {
         return mapper.readValue(json, Object.class);
     }
 }
