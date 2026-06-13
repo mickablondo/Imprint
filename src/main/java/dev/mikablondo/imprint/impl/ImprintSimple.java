@@ -9,7 +9,6 @@ import dev.mikablondo.imprint.utils.CompressionUtils;
 import dev.mikablondo.imprint.utils.SerializationUtils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * {@link Imprint} implementation that encodes the serialized object into a self-contained,
@@ -31,8 +30,8 @@ public class ImprintSimple implements Imprint {
         }
 
         try {
-            final String json = SerializationUtils.toJson(o);
-            final byte[] compressed = CompressionUtils.compress(json.getBytes(StandardCharsets.UTF_8));
+            final byte[] json = SerializationUtils.toJson(o);
+            final byte[] compressed = CompressionUtils.compress(json);
             return Base64Utils.encode(compressed);
         } catch (JsonProcessingException e) {
             throw new ImprintException(ImprintError.SERIALIZATION_FAILED, e);
