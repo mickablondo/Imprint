@@ -10,8 +10,13 @@ Object → sérialisation (JSON) → compression → Base64 → seed
 ### With Store
 
 ```
-Object → sérialisation (JSON) → stocké dans Redis/Map → seed = UUID court
+Object → sérialisation (JSON) → stocké dans un store → seed = UUID court
 ```
+
+Kinds of store :
+- memory with Map
+- database
+- file
 
 ## Decode
 
