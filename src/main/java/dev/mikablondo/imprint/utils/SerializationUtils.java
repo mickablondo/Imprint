@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.io.IOException;
+
 /**
  * Utility class for JSON serialization and deserialization using Jackson.
  */
@@ -18,21 +20,21 @@ public class SerializationUtils {
      * Serializes a Java object to a JSON string.
      *
      * @param o the object to serialize
-     * @return the JSON string
+     * @return the JSON byte array
      * @throws JsonProcessingException if serialization fails
      */
-    public static String toJson(Object o) throws JsonProcessingException {
-        return mapper.writeValueAsString(o);
+    public static byte[] toJson(Object o) throws JsonProcessingException {
+        return mapper.writeValueAsBytes(o);
     }
 
     /**
-     * Deserializes a JSON string to a Java object.
+     * Deserializes a JSON byte array to a Java object.
      *
-     * @param json the JSON string to deserialize
+     * @param json the JSON byte array to deserialize
      * @return the deserialized object
-     * @throws JsonProcessingException if deserialization fails
+     * @throws IOException if deserialization fails
      */
-    public static Object fromJson(String json) throws JsonProcessingException {
+    public static Object fromJson(byte[] json) throws IOException {
         return mapper.readValue(json, Object.class);
     }
 }
