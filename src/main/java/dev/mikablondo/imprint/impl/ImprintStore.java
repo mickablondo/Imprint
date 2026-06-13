@@ -26,7 +26,7 @@ public class ImprintStore implements Imprint {
      * @implSpec Uses the UUID seed to retrieve and deserialize the object from the store.
      */
     @Override
-    public Object decode(String s) {
+    public <T> T decode(String encoded, Class<T> type) {
         return null;
     }
 }

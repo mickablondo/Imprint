@@ -17,8 +17,9 @@ public interface Imprint {
     /**
      * Decodes a seed back to its original Java object.
      *
-     * @param s the seed to decode
+     * @param encoded the seed to decode
+     * @param type    the class type of the object to decode into
      * @return the decoded object
      */
-    Object decode(String s);
+    <T> T decode(String encoded, Class<T> type);
 }

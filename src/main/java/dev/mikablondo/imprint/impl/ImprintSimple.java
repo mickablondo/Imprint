@@ -46,7 +46,7 @@ public class ImprintSimple implements Imprint {
      * @implSpec Base64-decodes, decompresses and deserializes the seed back to its original object.
      */
     @Override
-    public Object decode(String s) {
+    public <T> T decode(String encoded, Class<T> type) {
         return null;
     }
 }
