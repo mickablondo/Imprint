@@ -1,13 +1,18 @@
 # Imprint
 Encode any Java object into a compact, portable string. Decode it back anywhere, anytime.
 
-## Encode
+## Public methods
+- Imprint
+- ImprintStore
 
+## Imprint
+### Encode
+#### Simple
 ```
 Object → sérialisation (JSON) → compression → Base64 → seed
 ```
 
-### With Store
+#### With Store
 
 ```
 Object → sérialisation (JSON) → stocké dans un store → seed = UUID court
@@ -18,7 +23,7 @@ Kinds of store :
 - database
 - file
 
-## Decode
+### Decode
 
 ```
 seed -> Base64 -> décompression -> désérialisation -> Object
