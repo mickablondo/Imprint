@@ -1,7 +1,7 @@
 package dev.mikablondo.imprint.impl;
 
 import dev.mikablondo.imprint.Imprint;
-import dev.mikablondo.imprint.exception.ImprintException;
+import dev.mikablondo.imprint.core.exception.ImprintException;
 import dev.mikablondo.imprint.model.Person;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ImprintSimpleTest {
 
-    private final Imprint imprint = new ImprintSimple();
+    private final Imprint imprint = new SelfContainedImprint();
     private final Person person = new Person(
             "Jean", "Dupont", 42, "jean@example.com", List.of("chess", "hiking")
     );

@@ -1,4 +1,4 @@
-package dev.mikablondo.imprint.exception;
+package dev.mikablondo.imprint.core.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
