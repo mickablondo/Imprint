@@ -1,8 +1,14 @@
 package dev.mikablondo.imprint.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import dev.mikablondo.imprint.Imprint;
 import dev.mikablondo.imprint.ImprintStore;
+import dev.mikablondo.imprint.core.exception.ImprintError;
+import dev.mikablondo.imprint.core.exception.ImprintException;
+import dev.mikablondo.imprint.core.utils.SerializationUtils;
 import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
 
 /**
  * {@link Imprint} implementation that stores the serialized object in an external store,
@@ -23,9 +29,13 @@ public class StoreBackedImprint implements Imprint {
      */
     @Override
     public String encode(Object o) {
-        /*byte[] data = serialize(o);
-        return store.save(data);*/
-        return null;
+        byte[] data;
+        try {
+            data = SerializationUtils.toJson(o);
+        } catch (JsonProcessingException e) {
+            throw new ImprintException(ImprintError.SERIALIZATION_FAILED, e);
+        }
+        return store.save(data);
     }
 
     /**
@@ -35,8 +45,11 @@ public class StoreBackedImprint implements Imprint {
      */
     @Override
     public <T> T decode(String encoded, Class<T> type) {
-        /*byte[] data = store.load(key);
-        return deserialize(data, type);*/
-        return null;
+        byte[] data = store.load(encoded);
+        try {
+            return SerializationUtils.fromJson(data, type);
+        } catch (IOException e) {
+            throw new ImprintException(ImprintError.DESERIALIZATION_FAILED, e);
+        }
     }
 }

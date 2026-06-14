@@ -31,10 +31,12 @@ public class SerializationUtils {
      * Deserializes a JSON byte array to a Java object.
      *
      * @param json the JSON byte array to deserialize
+     * @param type the class of the object to deserialize to
+     * @param <T>  the type of the object
      * @return the deserialized object
      * @throws IOException if deserialization fails
      */
-    public static Object fromJson(byte[] json) throws IOException {
-        return mapper.readValue(json, Object.class);
+    public static <T> T fromJson(byte[] json, Class<T> type) throws IOException {
+        return mapper.readValue(json, type);
     }
 }

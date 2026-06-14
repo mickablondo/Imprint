@@ -47,6 +47,19 @@ public class SelfContainedImprint implements Imprint {
      */
     @Override
     public <T> T decode(String encoded, Class<T> type) {
-        return null;
+        byte[] decoded = Base64Utils.decode(encoded);
+
+        byte[] decompressed;
+        try {
+            decompressed = CompressionUtils.decompress(decoded);
+        } catch (IOException e) {
+            throw new ImprintException(ImprintError.DECOMPRESSION_FAILED, e);
+        }
+
+        try {
+            return SerializationUtils.fromJson(decompressed, type);
+        } catch (IOException e) {
+            throw new ImprintException(ImprintError.DESERIALIZATION_FAILED, e);
+        }
     }
 }
