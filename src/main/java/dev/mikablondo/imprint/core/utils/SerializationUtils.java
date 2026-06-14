@@ -1,4 +1,4 @@
-package dev.mikablondo.imprint.utils;
+package dev.mikablondo.imprint.core.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;

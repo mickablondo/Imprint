@@ -1,4 +1,4 @@
-package dev.mikablondo.imprint.utils;
+package dev.mikablondo.imprint.core.utils;
 
 import java.util.Base64;
 

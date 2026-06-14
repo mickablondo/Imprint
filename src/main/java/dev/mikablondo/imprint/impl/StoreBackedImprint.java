@@ -1,6 +1,8 @@
 package dev.mikablondo.imprint.impl;
 
 import dev.mikablondo.imprint.Imprint;
+import dev.mikablondo.imprint.ImprintStore;
+import lombok.RequiredArgsConstructor;
 
 /**
  * {@link Imprint} implementation that stores the serialized object in an external store,
@@ -9,7 +11,11 @@ import dev.mikablondo.imprint.Imprint;
  * <p>Encoding process: serialization -> store -> UUID</p>
  * <p>Decoding process: UUID -> store lookup -> deserialization -> Object</p>
  */
-public class ImprintStore implements Imprint {
+@RequiredArgsConstructor
+public class StoreBackedImprint implements Imprint {
+
+    private final ImprintStore store;
+
     /**
      * {@inheritDoc}
      *
@@ -17,7 +23,9 @@ public class ImprintStore implements Imprint {
      */
     @Override
     public String encode(Object o) {
-        return "";
+        /*byte[] data = serialize(o);
+        return store.save(data);*/
+        return null;
     }
 
     /**
@@ -27,6 +35,8 @@ public class ImprintStore implements Imprint {
      */
     @Override
     public <T> T decode(String encoded, Class<T> type) {
+        /*byte[] data = store.load(key);
+        return deserialize(data, type);*/
         return null;
     }
 }

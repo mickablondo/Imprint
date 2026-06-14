@@ -2,11 +2,11 @@ package dev.mikablondo.imprint.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dev.mikablondo.imprint.Imprint;
-import dev.mikablondo.imprint.exception.ImprintError;
-import dev.mikablondo.imprint.exception.ImprintException;
-import dev.mikablondo.imprint.utils.Base64Utils;
-import dev.mikablondo.imprint.utils.CompressionUtils;
-import dev.mikablondo.imprint.utils.SerializationUtils;
+import dev.mikablondo.imprint.core.exception.ImprintError;
+import dev.mikablondo.imprint.core.exception.ImprintException;
+import dev.mikablondo.imprint.core.utils.Base64Utils;
+import dev.mikablondo.imprint.core.utils.CompressionUtils;
+import dev.mikablondo.imprint.core.utils.SerializationUtils;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
  * <p>Encoding process: serialization -> compression -> Base64 -> seed</p>
  * <p>Decoding process: seed -> Base64 -> decompression -> deserialization -> Object</p>
  */
-public class ImprintSimple implements Imprint {
+public class SelfContainedImprint implements Imprint {
     /**
      * {@inheritDoc}
      *
