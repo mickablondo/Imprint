@@ -18,10 +18,11 @@ Object → sérialisation (JSON) → compression → Base64 → seed
 Object → sérialisation (JSON) → stocké dans un store → seed = UUID court
 ```
 
-Kinds of store :
+Types of store :
 - memory with Map
 - database
 - file
+- Redis ?
 
 ### Decode
 
