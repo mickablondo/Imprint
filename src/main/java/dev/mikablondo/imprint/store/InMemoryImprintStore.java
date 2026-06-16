@@ -1,10 +1,9 @@
 package dev.mikablondo.imprint.store;
 
-import dev.mikablondo.imprint.Imprint;
 import dev.mikablondo.imprint.ImprintStore;
 
 /**
- * {@link Imprint} implementation that stores the serialized object in memory,
+ * {@link ImprintStore} implementation that stores the serialized object in memory,
  * and returns a short UUID as seed.
  */
 public class InMemoryImprintStore implements ImprintStore {

@@ -1,13 +1,13 @@
 package dev.mikablondo.imprint.store;
 
-import dev.mikablondo.imprint.Imprint;
 import dev.mikablondo.imprint.ImprintStore;
 
 /**
- * {@link Imprint} implementation that stores the serialized object in a database,
+ * {@link ImprintStore} implementation that stores the serialized object in a database,
  * and returns a short UUID as seed.
  */
 public class JdbcImprintStore implements ImprintStore {
+
     /**
      * {@inheritDoc}
      *
