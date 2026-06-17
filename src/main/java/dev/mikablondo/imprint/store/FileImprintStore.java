@@ -1,12 +1,17 @@
 package dev.mikablondo.imprint.store;
 
 import dev.mikablondo.imprint.ImprintStore;
+import lombok.RequiredArgsConstructor;
 
 /**
  * {@link ImprintStore} implementation that stores the serialized object in a file,
  * and returns a short UUID as seed.
  */
+@RequiredArgsConstructor
 public class FileImprintStore implements ImprintStore {
+    
+    private final String filePath;
+
     /**
      * {@inheritDoc}
      *
