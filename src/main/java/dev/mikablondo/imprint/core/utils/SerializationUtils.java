@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 
 /**
  * Utility class for JSON serialization and deserialization using Jackson.
  */
+@UtilityClass
 public class SerializationUtils {
     // configuration for the ObjectMapper to ensure compact JSON and ignore unknown properties during deserialization
     private static final ObjectMapper mapper = new ObjectMapper()

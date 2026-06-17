@@ -1,12 +1,35 @@
 package dev.mikablondo.imprint.store;
 
 import dev.mikablondo.imprint.ImprintStore;
+import dev.mikablondo.imprint.core.exception.ImprintError;
+import dev.mikablondo.imprint.core.exception.ImprintException;
+import dev.mikablondo.imprint.core.utils.UUIDUtils;
+import lombok.RequiredArgsConstructor;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 
 /**
  * {@link ImprintStore} implementation that stores the serialized object in a database,
  * and returns a short UUID as seed.
+ * The JdbcImprintStore needs to receive a datasource that is already configured to connect to the database where the imprint_store table is located.
+ * The table should have the following structure:
+ * <pre>
+ * CREATE TABLE imprint_store (
+ *     id VARCHAR(8) PRIMARY KEY,
+ *     data BYTEA NOT NULL
+ * );
+ * </pre>
  */
+@RequiredArgsConstructor
 public class JdbcImprintStore implements ImprintStore {
+
+    private final DataSource dataSource;
+
     /**
      * {@inheritDoc}
      *
@@ -14,7 +37,21 @@ public class JdbcImprintStore implements ImprintStore {
      */
     @Override
     public String save(byte[] data) {
-        return "";
+        String key = UUIDUtils.generate();
+
+        String sql = "INSERT INTO imprint_store (id, data) VALUES (?, ?)";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, key);
+            ps.setBytes(2, data);
+            ps.executeUpdate();
+
+            return key;
+        } catch (SQLException e) {
+            throw new ImprintException(ImprintError.JDBC_SAVE_FAILED, e);
+        }
     }
 
     /**
@@ -24,6 +61,21 @@ public class JdbcImprintStore implements ImprintStore {
      */
     @Override
     public byte[] load(String key) {
-        return new byte[0];
+        String sql = "SELECT data FROM imprint_store WHERE id = ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, key);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    throw new ImprintException(ImprintError.JDBC_NOT_FOUND);
+                }
+                return rs.getBytes(1);
+            }
+        } catch (SQLException e) {
+            throw new ImprintException(ImprintError.JDBC_LOAD_FAILED, e);
+        }
     }
 }

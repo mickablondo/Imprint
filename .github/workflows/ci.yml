@@ -20,5 +20,8 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
+      - name: Verify Docker
+        run: docker info
+
       - name: Build and test
-        run: mvn clean install
+        run: mvn -B clean verify

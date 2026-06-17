@@ -1,9 +1,9 @@
 package dev.mikablondo.imprint.store;
 
 import dev.mikablondo.imprint.ImprintStore;
+import dev.mikablondo.imprint.core.utils.UUIDUtils;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -21,10 +21,7 @@ public class InMemoryImprintStore implements ImprintStore {
 
         // create a unique key by generating a random UUID and taking the first 8 characters
         do {
-            key = UUID.randomUUID()
-                    .toString()
-                    .replace("-", "")
-                    .substring(0, 8);
+            key = UUIDUtils.generate();
         } while (storage.containsKey(key));
 
         storage.put(key, data);

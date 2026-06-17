@@ -1,10 +1,13 @@
 package dev.mikablondo.imprint.core.utils;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.Base64;
 
 /**
  * Base64 utility class for encoding and decoding byte arrays to and from Base64 strings.
  */
+@UtilityClass
 public class Base64Utils {
     /**
      * Encodes a byte array into a Base64 string.

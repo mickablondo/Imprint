@@ -1,5 +1,7 @@
 package dev.mikablondo.imprint.core.utils;
 
+import lombok.experimental.UtilityClass;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Compression utility class for compressing and decompressing strings using GZIP.
  */
+@UtilityClass
 public class CompressionUtils {
     /**
      * Compresses a byte array using GZIP.

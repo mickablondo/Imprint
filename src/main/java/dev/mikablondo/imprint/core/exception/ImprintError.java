@@ -14,7 +14,10 @@ public enum ImprintError {
     SERIALIZATION_FAILED("Failed to serialize object"),
     COMPRESSION_FAILED("Failed to compress object"),
     DECOMPRESSION_FAILED("Failed to decompress seed"),
-    DESERIALIZATION_FAILED("Failed to deserialize object");
+    DESERIALIZATION_FAILED("Failed to deserialize object"),
+    JDBC_SAVE_FAILED("Failed to save imprint to database"),
+    JDBC_LOAD_FAILED("Failed to load imprint from database"),
+    JDBC_NOT_FOUND("Imprint not found in database");
 
     private final String message;
 }
