@@ -36,21 +36,36 @@ public class JdbcImprintStore implements ImprintStore {
      */
     @Override
     public String save(byte[] data) {
-        String key = UUIDUtils.generate();
+        final String sql = "INSERT INTO imprint_store (id, data) VALUES (?, ?)";
+        final int maxAttempts = 5;
 
-        String sql = "INSERT INTO imprint_store (id, data) VALUES (?, ?)";
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            String key = UUIDUtils.generate();
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, key);
-            ps.setBytes(2, data);
-            ps.executeUpdate();
+                ps.setString(1, key);
+                ps.setBytes(2, data);
+                ps.executeUpdate();
 
-            return key;
-        } catch (SQLException e) {
-            throw new ImprintException(ImprintError.JDBC_SAVE_FAILED, e);
+                return key;
+            } catch (SQLException e) {
+                String sqlState = e.getSQLState();
+
+                // SQLState class '23' = integrity constraint violation
+                boolean constraintViolation = sqlState != null && sqlState.startsWith("23");
+
+                if (constraintViolation && attempt < maxAttempts) {
+                    // if duplicate key
+                    continue;
+                }
+
+                throw new ImprintException(ImprintError.JDBC_SAVE_FAILED, e);
+            }
         }
+
+        throw new ImprintException(ImprintError.JDBC_SAVE_FAILED);
     }
 
     /**
