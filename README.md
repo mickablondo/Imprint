@@ -8,6 +8,11 @@ Encode any Java object into a compact, portable string. Decode it back anywhere,
 ## Imprint
 ### Encode
 #### Simple
+
+This method is useful for objects that can be serialized and compressed into a string.  
+The compressed string can be used as a seed to recreate the original object.  
+This method does not use any persistent store to keep the object, so the seed is a Base64-encoded string.
+
 ```
 Object → sérialisation (JSON) → compression → Base64 → seed
 ```
