@@ -62,13 +62,6 @@ Example:
 String seed = imprint.encode(myObject);
 ```
 
-Recommended for:
-
-- URLs
-- Temporary sharing
-- Stateless applications
-- Small to medium payloads
-
 ### Store Mode
 
 The object is persisted in a storage backend.
