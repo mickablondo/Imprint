@@ -2,11 +2,9 @@
 
 Encode any Java object into a compact, portable string and restore it later with a single line of code.
 
-```java
-String seed = imprint.encode(order);
-
-Order restored = imprint.decode(seed, Order.class);
-```
+Imprint provides two encoding strategies depending on your needs:
+- Self-contained encoding (no external dependency)
+- Store-backed encoding (external storage required)
 
 ## Features
 
@@ -38,7 +36,7 @@ Available implementations:
 
 ## Encoding
 
-### Embedded Mode
+### SelfContainedImprint
 
 The object is fully contained in the generated seed.
 
@@ -59,14 +57,18 @@ Seed
 Example:
 
 ```java
-String seed = imprint.encode(myObject);
+Imprint imprint = new SelfContainedImprint();
+
+String seed = imprint.encode(order);
+
+Order restored = imprint.decode(seed, Order.class);
 ```
 
-### Store Mode
+### StoreBackedImprint
 
-The object is persisted in a storage backend.
+The object is stored in an external `ImprintStore`.
 
-The generated seed only contains a unique identifier.
+The seed only contains a generated key.
 
 ```text
 Object
@@ -85,15 +87,12 @@ Example:
 ```java
 ImprintStore store = new InMemoryImprintStore();
 
-String seed = imprint.encode(myObject, store);
+Imprint imprint = new StoreBackedImprint(store);
+
+String seed = imprint.encode(order);
+
+Order restored = imprint.decode(seed, Order.class);
 ```
-
-Recommended for:
-
-- Large payloads
-- Long-term persistence
-- Distributed systems
-- Shared storage
 
 ## Decoding
 
@@ -121,12 +120,6 @@ Lookup in store
 JSON deserialization
   ↓
 Object
-```
-
-Example:
-
-```java
-MyObject object = imprint.decode(seed, MyObject.class);
 ```
 
 ## Roadmap
