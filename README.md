@@ -128,8 +128,8 @@ Current status:
 
 - ✅ Embedded mode
 - ✅ In-memory store
-- 🚧 JDBC store
-- 📋 File store
+- ✅ JDBC store
+- 🚧 File store
 
 ## License
 
