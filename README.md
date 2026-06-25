@@ -15,6 +15,23 @@ Imprint provides two encoding strategies depending on your needs:
 - Pluggable storage backends
 - Framework agnostic
 
+## Getting Started
+
+### Installation
+
+Coming soon on Maven Central!
+
+### Quick Start
+
+```java
+// Encode an object
+Imprint imprint = new SelfContainedImprint();
+String seed = imprint.encode(new MyObject());
+
+// Decode it later
+MyObject restored = imprint.decode(seed, MyObject.class);
+```
+
 ## Core APIs
 
 ### `Imprint`
