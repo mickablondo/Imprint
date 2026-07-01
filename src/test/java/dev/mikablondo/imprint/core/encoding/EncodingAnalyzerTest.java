@@ -1,5 +1,6 @@
 package dev.mikablondo.imprint.core.encoding;
 
+import dev.mikablondo.imprint.core.exception.ImprintException;
 import dev.mikablondo.imprint.core.utils.Base64Utils;
 import dev.mikablondo.imprint.core.utils.CompressionUtils;
 import dev.mikablondo.imprint.core.utils.SerializationUtils;
@@ -66,7 +67,7 @@ class EncodingAnalyzerTest {
         String invalidSeed = "!!!invalid base64!!!";
 
         // Act & Assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+        ImprintException exception = assertThrows(ImprintException.class, () ->
             EncodingAnalyzer.analyze(invalidSeed)
         );
         assertTrue(exception.getMessage().contains("Failed to decode Base64 seed"));
@@ -79,7 +80,7 @@ class EncodingAnalyzerTest {
         String corruptedSeed = Base64Utils.encode("corrupted data".getBytes());
 
         // Act & Assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+        ImprintException exception = assertThrows(ImprintException.class, () ->
             EncodingAnalyzer.analyze(corruptedSeed)
         );
         assertTrue(exception.getMessage().contains("Failed to decompress seed data"));
@@ -149,7 +150,7 @@ class EncodingAnalyzerTest {
     @DisplayName("should handle empty seed gracefully")
     void testAnalyzeEmptySeed() {
         // Act & Assert
-        assertThrows(RuntimeException.class, () ->
+        assertThrows(ImprintException.class, () ->
             EncodingAnalyzer.analyze("")
         );
     }

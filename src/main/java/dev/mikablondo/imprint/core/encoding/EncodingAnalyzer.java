@@ -1,5 +1,7 @@
 package dev.mikablondo.imprint.core.encoding;
 
+import dev.mikablondo.imprint.core.exception.ImprintError;
+import dev.mikablondo.imprint.core.exception.ImprintException;
 import dev.mikablondo.imprint.core.utils.Base64Utils;
 import dev.mikablondo.imprint.core.utils.CompressionUtils;
 import lombok.experimental.UtilityClass;
@@ -19,7 +21,7 @@ public class EncodingAnalyzer {
      *
      * @param seed the Base64-encoded seed to analyze
      * @return EncodingMetadata containing size metrics and compression ratio
-     * @throws RuntimeException if the seed cannot be decoded or decompressed
+     * @throws ImprintException if the seed cannot be decoded or decompressed
      */
     public static EncodingMetadata analyze(String seed) {
         try {
@@ -37,9 +39,9 @@ public class EncodingAnalyzer {
 
             return new EncodingMetadata(jsonSize, compressedSize, encodedSize, compressionRatio);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Failed to decode Base64 seed", e);
+            throw new ImprintException(ImprintError.INVALID_BASE64_SEED);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to decompress seed data", e);
+            throw new ImprintException(ImprintError.DECOMPRESSION_FAILED);
         }
     }
 }

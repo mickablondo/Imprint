@@ -17,7 +17,8 @@ public enum ImprintError {
     DESERIALIZATION_FAILED("Failed to deserialize object"),
     JDBC_SAVE_FAILED("Failed to save imprint to database"),
     JDBC_LOAD_FAILED("Failed to load imprint from database"),
-    JDBC_NOT_FOUND("Imprint not found in database");
+    JDBC_NOT_FOUND("Imprint not found in database"),
+    INVALID_BASE64_SEED("Invalid Base64 seed provided");
 
     private final String message;
 }
