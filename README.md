@@ -41,7 +41,7 @@ Coming soon on Maven Central Repository!
 
 ```xml
 <dependency>
-    <groupId>dev.mikablondo</groupId>
+    <groupId>io.github.mickablondo</groupId>
     <artifactId>imprint</artifactId>
     <version>1.0.0</version>
 </dependency>
@@ -426,8 +426,8 @@ Imprint imprint = new StoreBackedImprint(store);
 Analyze encoding metrics of already-encoded seeds to understand their size and compression efficiency. This is useful for monitoring, auditing, and identifying inefficiently compressed objects without needing the original object data.
 
 ```java
-import dev.mikablondo.imprint.core.encoding.EncodingAnalyzer;
-import dev.mikablondo.imprint.core.encoding.EncodingMetadata;
+import io.github.mickablondo.imprint.core.encoding.EncodingAnalyzer;
+import io.github.mickablondo.imprint.core.encoding.EncodingMetadata;
 
 Imprint imprint = new SelfContainedImprint();
 String seed = imprint.encode(order);  // e.g., "H4sIAA..."
@@ -435,10 +435,18 @@ String seed = imprint.encode(order);  // e.g., "H4sIAA..."
 // Analyze the seed's encoding metrics
 EncodingMetadata metrics = EncodingAnalyzer.analyze(seed);
 
-System.out.println("JSON Size: " + metrics.jsonSize() + " bytes");
-System.out.println("Compressed Size: " + metrics.compressedSize() + " bytes");
-System.out.println("Encoded Size: " + metrics.encodedSize() + " bytes");
-System.out.println("Compression Ratio: " + String.format("%.2f", metrics.compressionRatio()));
+System.out.
+
+println("JSON Size: "+metrics.jsonSize() +" bytes");
+        System.out.
+
+println("Compressed Size: "+metrics.compressedSize() +" bytes");
+        System.out.
+
+println("Encoded Size: "+metrics.encodedSize() +" bytes");
+        System.out.
+
+println("Compression Ratio: "+String.format("%.2f", metrics.compressionRatio()));
 ```
 
 **Return Values:**
