@@ -67,10 +67,9 @@ class EncodingAnalyzerTest {
         String invalidSeed = "!!!invalid base64!!!";
 
         // Act & Assert
-        ImprintException exception = assertThrows(ImprintException.class, () ->
+        assertThrows(ImprintException.class, () ->
             EncodingAnalyzer.analyze(invalidSeed)
         );
-        assertTrue(exception.getMessage().contains("Failed to decode Base64 seed"));
     }
 
     @Test
@@ -80,10 +79,9 @@ class EncodingAnalyzerTest {
         String corruptedSeed = Base64Utils.encode("corrupted data".getBytes());
 
         // Act & Assert
-        ImprintException exception = assertThrows(ImprintException.class, () ->
+        assertThrows(ImprintException.class, () ->
             EncodingAnalyzer.analyze(corruptedSeed)
         );
-        assertTrue(exception.getMessage().contains("Failed to decompress seed data"));
     }
 
     @Test

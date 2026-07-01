@@ -1,7 +1,15 @@
 package dev.mikablondo.imprint.store;
 
 import dev.mikablondo.imprint.ImprintStore;
+import dev.mikablondo.imprint.core.exception.ImprintException;
+import dev.mikablondo.imprint.core.exception.ImprintError;
+import dev.mikablondo.imprint.core.utils.UUIDUtils;
 import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * {@link ImprintStore} implementation that stores the serialized object in a file,
@@ -10,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FileImprintStore implements ImprintStore {
     
-    private final String filePath;
+    private final String baseDirectory;
 
     /**
      * {@inheritDoc}
@@ -19,7 +27,17 @@ public class FileImprintStore implements ImprintStore {
      */
     @Override
     public String save(byte[] data) {
-        return null;
+        String key = UUIDUtils.generate();
+        Path directory = Paths.get(baseDirectory);
+        Path filePath = directory.resolve(key);
+        
+        try {
+            Files.createDirectories(directory);
+            Files.write(filePath, data);
+            return key;
+        } catch (IOException e) {
+            throw new ImprintException(ImprintError.FILE_SAVE_FAILED, e);
+        }
     }
 
     /**
@@ -29,6 +47,15 @@ public class FileImprintStore implements ImprintStore {
      */
     @Override
     public byte[] load(String key) {
-        return new byte[0];
+        Path filePath = Paths.get(baseDirectory, key);
+        
+        try {
+            if (!Files.exists(filePath)) {
+                throw new ImprintException(ImprintError.FILE_NOT_FOUND);
+            }
+            return Files.readAllBytes(filePath);
+        } catch (IOException e) {
+            throw new ImprintException(ImprintError.FILE_LOAD_FAILED, e);
+        }
     }
 }
