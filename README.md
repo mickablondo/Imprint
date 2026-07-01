@@ -26,6 +26,7 @@ Imprint is a lightweight, framework-agnostic library that enables seamless objec
 - **Multiple Strategies**: Choose between embedded or store-backed encoding based on use case
 - **Portable Seeds**: Generate compact, transportable string references to complex objects
 - **Pluggable Storage**: Abstract storage interface with multiple implementations
+- **Encoding Metrics**: Analyze compression efficiency and size metrics of serialized objects
 - **Framework Agnostic**: Integrates with any Java framework or standalone applications
 - **Production Ready**: Thread-safe, with comprehensive error handling and retry logic
 - **Zero Dependencies**: Core functionality requires no external dependencies
@@ -350,6 +351,43 @@ ImprintStore store = new JdbcImprintStore(dataSource);
 // Used via StoreBackedImprint
 Imprint imprint = new StoreBackedImprint(store);
 ```
+
+### EncodingAnalyzer
+
+Analyze encoding metrics of already-encoded seeds to understand their size and compression efficiency. This is useful for monitoring, auditing, and identifying inefficiently compressed objects without needing the original object data.
+
+```java
+import dev.mikablondo.imprint.core.encoding.EncodingAnalyzer;
+import dev.mikablondo.imprint.core.encoding.EncodingMetadata;
+
+Imprint imprint = new SelfContainedImprint();
+String seed = imprint.encode(order);  // e.g., "H4sIAA..."
+
+// Analyze the seed's encoding metrics
+EncodingMetadata metrics = EncodingAnalyzer.analyze(seed);
+
+System.out.println("JSON Size: " + metrics.jsonSize() + " bytes");
+System.out.println("Compressed Size: " + metrics.compressedSize() + " bytes");
+System.out.println("Encoded Size: " + metrics.encodedSize() + " bytes");
+System.out.println("Compression Ratio: " + String.format("%.2f", metrics.compressionRatio()));
+```
+
+**Return Values:**
+
+- **jsonSize**: Original size of the object serialized to JSON (calculated by decompressing)
+- **compressedSize**: Size after GZIP compression
+- **encodedSize**: Size of the Base64-encoded seed (String length)
+- **compressionRatio**: Efficiency metric = `compressedSize / jsonSize`
+  - Ratio < 0.5: Excellent compression (50%+ reduction)
+  - Ratio 0.5-0.8: Good compression
+  - Ratio > 0.8: Minimal compression gain
+
+**Use Cases:**
+
+- Monitor which seeds compress poorly
+- Audit historical seeds in a database
+- Track compression efficiency over time
+- Decide between `SelfContainedImprint` and `StoreBackedImprint` based on seed size
 
 ---
 
