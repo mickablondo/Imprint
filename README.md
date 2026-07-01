@@ -143,7 +143,7 @@ Storage abstraction for persisting serialized object data.
 | **SelfContainedImprint** | Embedded in seed    | Single-instance, stateless operations        |
 | **InMemoryImprintStore** | JVM heap            | Development, testing, temporary state        |
 | **JdbcImprintStore**     | Relational database | Production, distributed systems, persistence |
-| **FileImprintStore**     | File system         | Planned                                      |
+| **FileImprintStore**     | File system         | Development, small deployments, local storage |
 | **RedisImprintStore**    | Redis cache         | Planned                                      |
 
 ---
@@ -315,7 +315,67 @@ public class OrderService {
 
 ---
 
-## API Reference
+### 4. FileImprintStore
+
+**Best for:** File-system-based storage with no external dependencies.
+
+#### Overview
+
+`FileImprintStore` is a lightweight implementation that persists serialized objects directly to the file system. Each object is stored in a separate file with an 8-character UUID as the filename.
+
+#### Configuration
+
+```java
+// Step 1: Create store with a directory path
+ImprintStore store = new FileImprintStore("/path/to/imprint-storage");
+
+// Step 2: Use with StoreBackedImprint
+Imprint imprint = new StoreBackedImprint(store);
+```
+
+#### Example
+
+```java
+@Service
+public class OrderServiceWithFileStore {
+    private final Imprint imprint;
+  
+    public OrderServiceWithFileStore() {
+        ImprintStore store = new FileImprintStore("./data/imprints");
+        this.imprint = new StoreBackedImprint(store);
+    }
+  
+    public String saveOrderReference(Order order) {
+        return imprint.encode(order);  // Stores order data in file system
+    }
+  
+    public Order restoreOrder(String reference) {
+        return imprint.decode(reference, Order.class);  // Retrieves from file system
+    }
+}
+```
+
+#### Implementation Details
+
+| Aspect                  | Details                                                           |
+| ----------------------- | ----------------------------------------------------------------- |
+| **Storage Location**    | Each object stored as a separate file in the specified directory  |
+| **File Naming**         | 8-character UUID (e.g., `a1b2c3d4`)                               |
+| **Directory Creation**  | Automatically creates directories if they don't exist             |
+| **Data Format**         | Binary compressed format                                          |
+| **Thread Safety**       | File system operations are atomic per file                        |
+| **Error Handling**      | Throws`ImprintException` with descriptive error codes on failures |
+
+#### Performance Considerations
+
+| Metric                | Consideration                                                          |
+| --------------------- | ---------------------------------------------------------------------- |
+| **I/O Latency**       | Each `save()` and `load()` operation involves disk I/O                  |
+| **Throughput**        | Depends on disk speed and file system performance                      |
+| **Storage Footprint** | Compressed binary files; one file per object                           |
+| **Scalability**       | Suitable for small to medium volumes; consider database for high scale |
+
+---
 
 ### SelfContainedImprint
 
@@ -347,6 +407,15 @@ MyObject restored = imprint.decode(seed, MyObject.class);
 ```java
 DataSource dataSource = /* configured DataSource */;
 ImprintStore store = new JdbcImprintStore(dataSource);
+
+// Used via StoreBackedImprint
+Imprint imprint = new StoreBackedImprint(store);
+```
+
+### FileImprintStore
+
+```java
+ImprintStore store = new FileImprintStore("./data/imprints");
 
 // Used via StoreBackedImprint
 Imprint imprint = new StoreBackedImprint(store);
@@ -403,7 +472,7 @@ System.out.println("Compression Ratio: " + String.format("%.2f", metrics.compres
 | StoreBackedImprint API                   | ✅ Stable  |
 | InMemoryImprintStore                     | ✅ Stable  |
 | JdbcImprintStore                         | ✅ Stable  |
-| FileImprintStore                         | 🚧 Planned |
+| FileImprintStore                         | ✅ Stable  |
 | RedisImprintStore                        | 🚧 Planned |
 
 ---
