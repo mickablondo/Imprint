@@ -37,7 +37,7 @@ Imprint is a lightweight, framework-agnostic library that enables seamless objec
 
 ### Maven
 
-Coming soon on Maven Central Repository!
+Available on Maven Central Repository!
 
 ```xml
 <dependency>
