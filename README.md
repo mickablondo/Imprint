@@ -39,6 +39,8 @@ Imprint is a lightweight, framework-agnostic library that enables seamless objec
 
 Available on Maven Central Repository!
 
+[![MvnRepository](https://badges.mvnrepository.com/badge/io.github.mickablondo/imprint/badge.svg?label=MvnRepository)](https://mvnrepository.com/artifact/io.github.mickablondo/imprint)
+
 ```xml
 <dependency>
     <groupId>io.github.mickablondo</groupId>
@@ -138,13 +140,13 @@ Storage abstraction for persisting serialized object data.
 **Available Implementations:**
 
 
-| Implementation           | Storage             | Use Case                                     |
-| ------------------------ | ------------------- | -------------------------------------------- |
-| **SelfContainedImprint** | Embedded in seed    | Single-instance, stateless operations        |
-| **InMemoryImprintStore** | JVM heap            | Development, testing, temporary state        |
-| **JdbcImprintStore**     | Relational database | Production, distributed systems, persistence |
+| Implementation           | Storage             | Use Case                                      |
+| ------------------------ | ------------------- | --------------------------------------------- |
+| **SelfContainedImprint** | Embedded in seed    | Single-instance, stateless operations         |
+| **InMemoryImprintStore** | JVM heap            | Development, testing, temporary state         |
+| **JdbcImprintStore**     | Relational database | Production, distributed systems, persistence  |
 | **FileImprintStore**     | File system         | Development, small deployments, local storage |
-| **RedisImprintStore**    | Redis cache         | Planned                                      |
+| **RedisImprintStore**    | Redis cache         | Planned                                       |
 
 ---
 
@@ -357,20 +359,22 @@ public class OrderServiceWithFileStore {
 
 #### Implementation Details
 
-| Aspect                  | Details                                                           |
-| ----------------------- | ----------------------------------------------------------------- |
-| **Storage Location**    | Each object stored as a separate file in the specified directory  |
-| **File Naming**         | 8-character UUID (e.g., `a1b2c3d4`)                               |
-| **Directory Creation**  | Automatically creates directories if they don't exist             |
-| **Data Format**         | Binary compressed format                                          |
-| **Thread Safety**       | File system operations are atomic per file                        |
-| **Error Handling**      | Throws`ImprintException` with descriptive error codes on failures |
+
+| Aspect                 | Details                                                           |
+| ---------------------- | ----------------------------------------------------------------- |
+| **Storage Location**   | Each object stored as a separate file in the specified directory  |
+| **File Naming**        | 8-character UUID (e.g.,`a1b2c3d4`)                                |
+| **Directory Creation** | Automatically creates directories if they don't exist             |
+| **Data Format**        | Binary compressed format                                          |
+| **Thread Safety**      | File system operations are atomic per file                        |
+| **Error Handling**     | Throws`ImprintException` with descriptive error codes on failures |
 
 #### Performance Considerations
 
+
 | Metric                | Consideration                                                          |
 | --------------------- | ---------------------------------------------------------------------- |
-| **I/O Latency**       | Each `save()` and `load()` operation involves disk I/O                  |
+| **I/O Latency**       | Each`save()` and `load()` operation involves disk I/O                  |
 | **Throughput**        | Depends on disk speed and file system performance                      |
 | **Storage Footprint** | Compressed binary files; one file per object                           |
 | **Scalability**       | Suitable for small to medium volumes; consider database for high scale |
@@ -469,7 +473,6 @@ println("Compression Ratio: "+String.format("%.2f", metrics.compressionRatio()))
 - Decide between `SelfContainedImprint` and `StoreBackedImprint` based on seed size
 
 ---
-
 
 ## Project Status
 
