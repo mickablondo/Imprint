@@ -88,9 +88,8 @@ class EncodingAnalyzerTest {
     @DisplayName("should handle large objects correctly")
     void testAnalyzeLargeObject() throws Exception {
         // Arrange
-        StringBuilder largeDescription = new StringBuilder();
-        largeDescription.repeat("This is a large object used for testing compression efficiency. ", 1000);
-        TestObject testObj = new TestObject("Large", 999, largeDescription.toString());
+        String text = "This is a large object used for testing compression efficiency. ".repeat(1000);
+        TestObject testObj = new TestObject("Large", 999, text);
         byte[] jsonBytes = SerializationUtils.toJson(testObj);
         byte[] compressedBytes = CompressionUtils.compress(jsonBytes);
         String seed = Base64Utils.encode(compressedBytes);
