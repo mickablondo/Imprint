@@ -89,4 +89,60 @@ class SelfContainedImprintTest {
         assertThrows(IllegalArgumentException.class, () -> imprint.decode(invalidSeed, Person.class));
     }
     //endregion
+
+    //region BATCH OPERATIONS
+    @Test
+    void shouldEncodeAllObjects() {
+        final Person person1 = new Person("Alice", "Smith", 30, "alice@example.com", List.of("reading"));
+        final Person person2 = new Person("Bob", "Jones", 25, "bob@example.com", List.of("gaming"));
+        final List<Person> people = List.of(person1, person2);
+
+        final List<String> seeds = imprint.encodeAll(people);
+
+        assertEquals(2, seeds.size());
+        assertTrue(seeds.stream().allMatch(seed -> seed != null && !seed.isBlank()));
+    }
+
+    @Test
+    void shouldDecodeAllSeeds() {
+        final Person person1 = new Person("Alice", "Smith", 30, "alice@example.com", List.of("reading"));
+        final Person person2 = new Person("Bob", "Jones", 25, "bob@example.com", List.of("gaming"));
+        final List<Person> people = List.of(person1, person2);
+
+        final List<String> seeds = imprint.encodeAll(people);
+        final List<Person> decoded = imprint.decodeAll(seeds, Person.class);
+
+        assertEquals(2, decoded.size());
+        assertEquals(person1, decoded.get(0));
+        assertEquals(person2, decoded.get(1));
+    }
+
+    @Test
+    void shouldEncodeAllEmptyList() {
+        final List<String> seeds = imprint.encodeAll(List.of());
+        assertEquals(0, seeds.size());
+    }
+
+    @Test
+    void shouldDecodeAllEmptyList() {
+        final List<Person> decoded = imprint.decodeAll(List.of(), Person.class);
+        assertEquals(0, decoded.size());
+    }
+
+    @Test
+    void shouldPreserveOrderWhenEncodingAndDecodingAll() {
+        final Person person1 = new Person("Zoe", "Alpha", 20, "zoe@example.com", List.of());
+        final Person person2 = new Person("Alice", "Beta", 25, "alice@example.com", List.of());
+        final Person person3 = new Person("Bob", "Gamma", 30, "bob@example.com", List.of());
+        final List<Person> people = List.of(person1, person2, person3);
+
+        final List<String> seeds = imprint.encodeAll(people);
+        final List<Person> decoded = imprint.decodeAll(seeds, Person.class);
+
+        assertEquals(3, decoded.size());
+        assertEquals("Zoe", decoded.get(0).firstName());
+        assertEquals("Alice", decoded.get(1).firstName());
+        assertEquals("Bob", decoded.get(2).firstName());
+    }
+    //endregion
 }
