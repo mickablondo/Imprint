@@ -45,7 +45,7 @@ Available on Maven Central Repository!
 <dependency>
     <groupId>io.github.mickablondo</groupId>
     <artifactId>imprint</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
