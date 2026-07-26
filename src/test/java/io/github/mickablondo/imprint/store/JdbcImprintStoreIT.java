@@ -1,5 +1,6 @@
 package io.github.mickablondo.imprint.store;
 
+import io.github.mickablondo.imprint.store.jdbc.JdbcImprintStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;

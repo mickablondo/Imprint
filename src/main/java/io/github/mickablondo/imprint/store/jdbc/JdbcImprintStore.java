@@ -1,4 +1,4 @@
-package io.github.mickablondo.imprint.store;
+package io.github.mickablondo.imprint.store.jdbc;
 
 import io.github.mickablondo.imprint.ImprintStore;
 import io.github.mickablondo.imprint.core.exception.ImprintError;
@@ -36,7 +36,7 @@ public class JdbcImprintStore implements ImprintStore {
      */
     @Override
     public String save(byte[] data) {
-        final String sql = "INSERT INTO imprint_store (id, data) VALUES (?, ?)";
+        final String sql = "INSERT INTO " + ImprintStoreDBEnum.TABLE.getValue() + " (" + ImprintStoreDBEnum.Column.ID.getValue() + ", " + ImprintStoreDBEnum.Column.DATA.getValue() + ") VALUES (?, ?)";
         final int maxAttempts = 5;
 
         for (int attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -75,7 +75,7 @@ public class JdbcImprintStore implements ImprintStore {
      */
     @Override
     public byte[] load(String key) {
-        String sql = "SELECT data FROM imprint_store WHERE id = ?";
+        String sql = "SELECT " + ImprintStoreDBEnum.Column.DATA.getValue() + " FROM " + ImprintStoreDBEnum.TABLE.getValue() + " WHERE " + ImprintStoreDBEnum.Column.ID.getValue() + " = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

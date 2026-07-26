@@ -1,7 +1,6 @@
 package io.github.mickablondo.imprint;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Contract for encoding any Java object into a portable string (seed),
@@ -36,7 +35,7 @@ public interface Imprint {
     default <T> List<String> encodeAll(List<T> objects) {
         return objects.stream()
                 .map(this::encode)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -50,6 +49,6 @@ public interface Imprint {
     default <T> List<T> decodeAll(List<String> seeds, Class<T> type) {
         return seeds.stream()
                 .map(seed -> decode(seed, type))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
