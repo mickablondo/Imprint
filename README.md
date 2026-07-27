@@ -136,17 +136,18 @@ Storage abstraction for persisting serialized object data.
 
 - `String save(byte[] data)` — Persists binary data and returns a unique identifier
 - `byte[] load(String key)` — Retrieves binary data by identifier
+- `long getCreationDate(String key)` *(Optional)* — Returns the creation timestamp (ms since epoch) if supported by the implementation; only `JdbcImprintStore` provides this data
 
 **Available Implementations:**
 
 
-| Implementation           | Storage             | Use Case                                      |
-| ------------------------ | ------------------- | --------------------------------------------- |
-| **SelfContainedImprint** | Embedded in seed    | Single-instance, stateless operations         |
-| **InMemoryImprintStore** | JVM heap            | Development, testing, temporary state         |
-| **JdbcImprintStore**     | Relational database | Production, distributed systems, persistence  |
-| **FileImprintStore**     | File system         | Development, small deployments, local storage |
-| **RedisImprintStore**    | Redis cache         | Planned                                       |
+| Implementation           | Storage             | Use Case                                      | Creation Date |
+|--------------------------|---------------------|-----------------------------------------------|---------------|
+| **SelfContainedImprint** | Embedded in seed    | Single-instance, stateless operations         | ❌            |
+| **InMemoryImprintStore** | JVM heap            | Development, testing, temporary state         | ❌            |
+| **JdbcImprintStore**     | Relational database | Production, distributed systems, persistence  | ✅            |
+| **FileImprintStore**     | File system         | Development, small deployments, local storage | ❌            |
+| **RedisImprintStore**    | Redis cache         | Planned                                       | —             |
 
 ---
 

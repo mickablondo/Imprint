@@ -7,10 +7,9 @@ import io.github.mickablondo.imprint.core.utils.UUIDUtils;
 import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.Instant;
+import java.util.Optional;
 
 /**
  * {@link ImprintStore} implementation that stores the serialized object in a database,
@@ -20,7 +19,8 @@ import java.sql.SQLException;
  * <pre>
  * CREATE TABLE imprint_store (
  *     id VARCHAR(8) PRIMARY KEY,
- *     data BYTEA NOT NULL
+ *     data BYTEA NOT NULL,
+ *     creation_date TIMESTAMP NOT NULL DEFAULT now()
  * );
  * </pre>
  */
@@ -87,6 +87,28 @@ public class JdbcImprintStore implements ImprintStore {
                     throw new ImprintException(ImprintError.JDBC_NOT_FOUND);
                 }
                 return rs.getBytes(1);
+            }
+        } catch (SQLException e) {
+            throw new ImprintException(ImprintError.JDBC_LOAD_FAILED, e);
+        }
+    }
+
+    @Override
+    public Optional<Instant> getCreationDate(String key) {
+        String sql = "SELECT " + ImprintStoreDBEnum.Column.CREATION_DATE.getValue()
+                + " FROM " + ImprintStoreDBEnum.TABLE.getValue()
+                + " WHERE " + ImprintStoreDBEnum.Column.ID.getValue() + " = ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, key);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    return Optional.empty();
+                }
+                Timestamp ts = rs.getTimestamp(1);
+                return Optional.of(ts.toInstant());
             }
         } catch (SQLException e) {
             throw new ImprintException(ImprintError.JDBC_LOAD_FAILED, e);
