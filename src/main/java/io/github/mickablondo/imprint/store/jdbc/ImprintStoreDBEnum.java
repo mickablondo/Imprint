@@ -19,7 +19,8 @@ public enum ImprintStoreDBEnum {
     @AllArgsConstructor
     public enum Column {
         ID("id"),
-        DATA("data");
+        DATA("data"),
+        CREATION_DATE("creation_date");
 
         private final String value;
     }
