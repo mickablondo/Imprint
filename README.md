@@ -489,6 +489,14 @@ println("Compression Ratio: "+String.format("%.2f", metrics.compressionRatio()))
 | FileImprintStore                         | ✅ Stable  |
 | RedisImprintStore                        | 🚧 Planned |
 
+### Roadmap
+
+**Next Release (v1.1.3)**
+- #21 `ImprintStore.getCreationDate()` — Track creation timestamps
+
+**Future Enhancements**
+- Redis support via `RedisImprintStore`
+
 ---
 
 ## License
