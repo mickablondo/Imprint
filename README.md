@@ -142,12 +142,12 @@ Storage abstraction for persisting serialized object data.
 
 
 | Implementation           | Storage             | Use Case                                      | Creation Date |
-|--------------------------|---------------------|-----------------------------------------------|---------------|
+| ------------------------ | ------------------- | --------------------------------------------- | ------------- |
 | **SelfContainedImprint** | Embedded in seed    | Single-instance, stateless operations         | ❌            |
 | **InMemoryImprintStore** | JVM heap            | Development, testing, temporary state         | ❌            |
 | **JdbcImprintStore**     | Relational database | Production, distributed systems, persistence  | ✅            |
 | **FileImprintStore**     | File system         | Development, small deployments, local storage | ❌            |
-| **RedisImprintStore**    | Redis cache         | Planned                                       | —             |
+| **RedisImprintStore**    | Redis cache         | Planned                                       | —            |
 
 ---
 
@@ -233,7 +233,8 @@ Create the required table in your database:
 ```sql
 CREATE TABLE imprint_store (
     id VARCHAR(8) PRIMARY KEY,
-    data BYTEA NOT NULL
+    data BYTEA NOT NULL,
+    creation_date TIMESTAMP NOT NULL DEFAULT now()
 );
 ```
 
@@ -492,11 +493,13 @@ println("Compression Ratio: "+String.format("%.2f", metrics.compressionRatio()))
 ### Roadmap
 
 **Next Release (v1.1.3)**
+
 - #21 `ImprintStore.getCreationDate()` — Track creation timestamps
 
-**Future Enhancements**
-- Redis support via `RedisImprintStore`
+**Future Enhancements**,
 
+* creation_date TIMESTAMP NOT NULL DEFAULT now()
+  - Redis support via `RedisImprintStore`
 ---
 
 ## License
