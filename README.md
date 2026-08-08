@@ -492,10 +492,6 @@ println("Compression Ratio: "+String.format("%.2f", metrics.compressionRatio()))
 
 ### Roadmap
 
-**Next Release (v1.1.4)**
-
-- #21 `ImprintStore.getCreationDate()` — Track creation timestamps
-
 **Future Enhancements**,
 
 * creation_date TIMESTAMP NOT NULL DEFAULT now()
